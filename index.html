@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy Menu Định Vị File Free</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #0b1120; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    .glass-card { background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(56, 189, 248, 0.15); backdrop-filter: blur(12px); border-radius: 1rem; }
+    .btn-gradient { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+    .btn-gradient:hover { background: linear-gradient(135deg, #0891b2, #2563eb); }
+  </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex items-center justify-center">
+  <div class="w-full max-w-md space-y-6">
+    <!-- Header -->
+    <header class="glass-card p-6 text-center space-y-2">
+      <div class="w-16 h-16 rounded-2xl btn-gradient mx-auto flex items-center justify-center text-3xl shadow-xl shadow-cyan-500/30 mb-3">
+        <i class="fa-solid fa-shield-halved text-white"></i>
+      </div>
+      <h1 class="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase">
+        Proxy Menu Định Vị File Free
+      </h1>
+      <p class="text-xs font-semibold text-amber-400 bg-amber-400/10 py-1.5 px-3 rounded-full border border-amber-400/20 inline-block">
+        <i class="fa-solid fa-cart-shopping mr-1"></i> Buy Đồ Xịn Hơn Lhệ: 0855424668
+      </p>
+    </header>
+
+    <!-- Form Nhập Key -->
+    <div id="login-section" class="glass-card p-6 space-y-4">
+      <div class="text-center space-y-1">
+        <h2 class="text-lg font-bold text-white">Kích Hoạt Quyền Truy Cập</h2>
+        <p class="text-xs text-slate-400">Nhập mã Key của bạn để mở khóa các liên kết được chia sẻ.</p>
+      </div>
+
+      <div class="space-y-3">
+        <div class="relative">
+          <input type="text" id="user-key-input" placeholder="Nhập mã USR-XXXXXXXXXXXX..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-4 text-center font-mono font-bold tracking-widest text-lg text-cyan-300 placeholder:text-slate-600 focus:border-cyan-500 focus:outline-none transition">
+        </div>
+        
+        <button onclick="verifyKey()" class="w-full btn-gradient text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-cyan-500/20 active:scale-[0.99] transition flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-key"></i>
+          <span>Xác Nhận Key</span>
+        </button>
+
+        <!-- Nút GET KEY ĐỘNG (Lấy link từ Admin) -->
+        <button onclick="openGetKeyLink()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-emerald-600/20 active:scale-[0.99] transition flex items-center justify-center space-x-2 border border-emerald-400/30">
+          <i class="fa-solid fa-gift text-yellow-300"></i>
+          <span>GET KEY</span>
+        </button>
+      </div>
+
+      <div id="error-msg" class="hidden p-3 bg-rose-950/40 border border-rose-800/60 rounded-xl text-rose-300 text-xs text-center"></div>
+
+      <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
+        <span id="current-dev-id">ID Máy: DEV-XXXX</span>
+        <button onclick="changeDeviceId()" class="text-cyan-400 hover:underline">Đổi ID (Test)</button>
+      </div>
+    </div>
+
+    <!-- Màn Hình VIP -->
+    <div id="vip-section" class="hidden glass-card p-6 space-y-5">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs text-emerald-400 font-semibold flex items-center space-x-1">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Key Hợp Lệ & Đã Mở Khóa</span>
+          </span>
+          <div id="active-key-code" class="font-mono font-bold text-lg text-white mt-0.5">USR-XXXXXX</div>
+        </div>
+        <button onclick="logout()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+          <i class="fa-solid fa-right-from-bracket mr-1"></i> Đăng xuất
+        </button>
+      </div>
+
+      <!-- Đếm ngược -->
+      <div class="p-4 bg-slate-900/80 border border-cyan-500/30 rounded-xl text-center space-y-1">
+        <div class="text-xs text-slate-400 font-medium">Thời Gian Hạn Sử Dụng Còn Lại</div>
+        <div id="countdown-timer" class="text-2xl font-mono font-bold text-cyan-400">00h 00m 00s</div>
+        <div id="active-key-info" class="text-xs text-slate-500">Chế độ: 1 Thiết Bị</div>
+      </div>
+
+      <!-- Danh sách Link -->
+      <div class="space-y-3">
+        <div class="text-sm font-bold text-white flex items-center space-x-2">
+          <i class="fa-solid fa-link text-cyan-400"></i>
+          <span>Danh Sách Liên Kết Nội Dung</span>
+        </div>
+        <div id="vip-links-container" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = 'KV_KEYS_DB';
+    const STORAGE_LINKS = 'KV_LINKS_DB';
+    const STORAGE_SESSION = 'KV_ACTIVE_SESSION';
+    const STORAGE_GET_KEY_URL = 'KV_GET_KEY_URL';
+
+    let currentDeviceId = localStorage.getItem('KV_DEV_ID');
+    if(!currentDeviceId) {
+      currentDeviceId = 'DEV-' + Math.floor(1000 + Math.random() * 9000);
+      localStorage.setItem('KV_DEV_ID', currentDeviceId);
+    }
+    document.getElementById('current-dev-id').innerText = `ID Máy: ${currentDeviceId}`;
+
+    function changeDeviceId() {
+      currentDeviceId = 'DEV-' + Math.floor(1000 + Math.random() * 9000);
+      localStorage.setItem('KV_DEV_ID', currentDeviceId);
+      document.getElementById('current-dev-id').innerText = `ID Máy: ${currentDeviceId}`;
+      alert('Đã đổi Device ID thành: ' + currentDeviceId);
+      logout();
+    }
+
+    function openGetKeyLink() {
+      const getKeyUrl = localStorage.getItem(STORAGE_GET_KEY_URL);
+      if(!getKeyUrl) {
+        alert('Admin chưa thiết lập Link Get Key!');
+        return;
+      }
+      window.open(getKeyUrl, '_blank');
+    }
+
+    function loadData(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; }
+      catch(e) { return []; }
+    }
+
+    function saveData(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+      window.dispatchEvent(new Event('storage'));
+    }
+
+    function getDurationMs(dur) {
+      if(dur === '12H') return 12 * 60 * 60 * 1000;
+      if(dur === '1D') return 24 * 60 * 60 * 1000;
+      if(dur === '7D') return 7 * 24 * 60 * 60 * 1000;
+      return Infinity;
+    }
+
+    function showError(msg) {
+      const errBox = document.getElementById('error-msg');
+      errBox.innerText = msg;
+      errBox.classList.remove('hidden');
+    }
+
+    function hideError() {
+      document.getElementById('error-msg').classList.add('hidden');
+    }
+
+    function verifyKey() {
+      hideError();
+      const inputCode = document.getElementById('user-key-input').value.trim();
+      if(!inputCode) return showError('Vui lòng nhập mã Key!');
+
+      const keys = loadData(STORAGE_KEYS);
+      const k = keys.find(item => item.code === inputCode);
+
+      if(!k) return showError('❌ Mã Key không tồn tại trên hệ thống!');
+      if(k.status !== 'active') return showError('🔒 Mã Key này đã bị Thu Hồi hoặc Khóa!');
+
+      const now = Date.now();
+      const durationMs = getDurationMs(k.duration);
+
+      if(k.type === '1DEV') {
+        if(!k.usedByDevice) {
+          k.usedByDevice = currentDeviceId;
+          k.activatedAt = now;
+          saveData(STORAGE_KEYS, keys);
+        } else if(k.usedByDevice !== currentDeviceId) {
+          return showError(`🔒 Key này đã bị DÍNH KHÓA cố định trên thiết bị khác (${k.usedByDevice})!`);
+        }
+      } else {
+        if(!k.activatedAt) {
+          k.activatedAt = now;
+          saveData(STORAGE_KEYS, keys);
+        }
+      }
+
+      if(k.duration !== 'FOREVER' && k.activatedAt && (now - k.activatedAt > durationMs)) {
+        return showError('⏳ Key me này đã HẾT HẠN sử dụng!');
+      }
+
+      localStorage.setItem(STORAGE_SESSION, JSON.stringify({ code: k.code, activatedAt: k.activatedAt }));
+      showVipDashboard(k);
+    }
+
+    let timerInterval = null;
+
+    function showVipDashboard(keyObj) {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('vip-section').classList.remove('hidden');
+      document.getElementById('active-key-code').innerText = keyObj.code;
+
+      const durText = keyObj.duration === 'FOREVER' ? 'Vĩnh Viễn' : keyObj.duration;
+      const typeText = keyObj.type === '1DEV' ? '🔒 1 Thiết Bị' : '🔓 Nhiều Thiết Bị';
+      document.getElementById('active-key-info').innerText = `Chế độ: ${typeText} | Gói: ${durText}`;
+
+      const links = loadData(STORAGE_LINKS);
+      const linksContainer = document.getElementById('vip-links-container');
+
+      if(links.length === 0) {
+        linksContainer.innerHTML = `<div class="text-xs text-slate-500 italic text-center py-4">Admin chưa cập nhật liên kết nào.</div>`;
+      } else {
+        linksContainer.innerHTML = links.map(l => `
+          <div class="p-3 bg-slate-900/90 border border-slate-800 rounded-xl space-y-2">
+            <div class="font-bold text-sm text-white">${l.title}</div>
+            <div class="flex items-center space-x-2">
+              <a href="${l.url}" target="_blank" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs py-2 px-3 rounded-lg text-center transition">
+                <i class="fa-solid fa-up-right-from-square mr-1"></i> Truy Cập Ngay
+              </a>
+              <button onclick="navigator.clipboard.writeText('${l.url}'); alert('Đã chép link!');" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg border border-slate-700 transition">
+                <i class="fa-solid fa-copy"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if(timerInterval) clearInterval(timerInterval);
+
+      function updateTimer() {
+        if(keyObj.duration === 'FOREVER') {
+          document.getElementById('countdown-timer').innerText = '♾️ Vĩnh Viễn';
+          return;
+        }
+
+        const now = Date.now();
+        const durationMs = getDurationMs(keyObj.duration);
+        const expireTime = (keyObj.activatedAt || now) + durationMs;
+        const diff = expireTime - now;
+
+        if(diff <= 0) {
+          document.getElementById('countdown-timer').innerText = 'HẾT HẠN';
+          clearInterval(timerInterval);
+          alert('Key của bạn đã hết hạn sử dụng!');
+          logout();
+          return;
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown-timer').innerText = 
+          `${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+      }
+
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function logout() {
+      if(timerInterval) clearInterval(timerInterval);
+      localStorage.removeItem(STORAGE_SESSION);
+      document.getElementById('login-section').classList.remove('hidden');
+      document.getElementById('vip-section').classList.add('hidden');
+      document.getElementById('user-key-input').value = '';
+      hideError();
+    }
+
+    const savedSession = localStorage.getItem(STORAGE_SESSION);
+    if(savedSession) {
+      try {
+        const session = JSON.parse(savedSession);
+        const keys = loadData(STORAGE_KEYS);
+        const k = keys.find(item => item.code === session.code);
+        if(k && k.status === 'active') {
+          showVipDashboard(k);
+        } else {
+          logout();
+        }
+      } catch(e) { logout(); }
+    }
+  </script>
+</body>
+</html>
